@@ -2,7 +2,7 @@
 
 A web app for hospital staff to add, view, search, filter, edit, discharge and delete admitted patients.
 
-**Live app:** https://patient-admission-app-six.vercel.app  
+**Live app:** https://patient-admission-app-6tkp.vercel.app  
 **Live API:** https://patient-admission-api-efhx.onrender.com (interactive docs at [`/docs`](https://patient-admission-api-efhx.onrender.com/docs))  
 **GitHub:** https://github.com/Shreyaskr0/patient-admission-app
 
