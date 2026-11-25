@@ -3,7 +3,7 @@ import { api } from "./api";
 import PatientForm from "./components/PatientForm";
 import ConfirmDialog from "./components/ConfirmDialog";
 
-const EMPTY_FILTERS = { search: "", ward: "", department: "", doctor: "", status: "" };
+const EMPTY_FILTERS = { search: "", ward: "", department: "", doctor: "" };
 
 function formatDate(iso) {
   const [y, m, d] = iso.split("-");
@@ -96,8 +96,7 @@ export default function App() {
     setConfirm(null);
   }
 
-  const hasFilters = search || filters.ward || filters.department || filters.doctor || filters.status;
-  const admittedCount = patients.filter((p) => p.status === "Admitted").length;
+  const hasFilters = search || filters.ward || filters.department || filters.doctor;
 
   return (
     <div className="app">
@@ -117,20 +116,6 @@ export default function App() {
       </header>
 
       <main className="container">
-        <section className="stats">
-          <div className="stat">
-            <span className="stat-label">Showing</span>
-            <span className="stat-value">{patients.length}</span>
-          </div>
-          <div className="stat">
-            <span className="stat-label">Admitted</span>
-            <span className="stat-value stat-admitted">{admittedCount}</span>
-          </div>
-          <div className="stat">
-            <span className="stat-label">Discharged</span>
-            <span className="stat-value">{patients.length - admittedCount}</span>
-          </div>
-        </section>
 
         <section className="filters" aria-label="Search and filters">
           <input
@@ -154,10 +139,6 @@ export default function App() {
               <select name="doctor" value={filters.doctor} onChange={handleFilterChange} aria-label="Filter by doctor">
                 <option value="">All doctors</option>
                 {options.doctors.map((d) => <option key={d}>{d}</option>)}
-              </select>
-              <select name="status" value={filters.status} onChange={handleFilterChange} aria-label="Filter by status">
-                <option value="">All statuses</option>
-                {options.statuses.map((s) => <option key={s}>{s}</option>)}
               </select>
             </>
           )}

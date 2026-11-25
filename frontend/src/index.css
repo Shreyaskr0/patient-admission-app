@@ -34,15 +34,8 @@ button, input, select { font: inherit; color: inherit; }
 .brand h1 { margin: 0; font-size: 20px; }
 .brand p { margin: 2px 0 0; font-size: 13px; color: var(--muted); }
 
-/* Stats */
-.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0 16px; }
-.stat { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; }
-.stat-label { display: block; font-size: 13px; color: var(--muted); }
-.stat-value { display: block; font-size: 26px; font-weight: 700; margin-top: 4px; }
-.stat-admitted { color: var(--blue); }
-
 /* Filters */
-.filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.filters { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 16px; }
 .filters .search { flex: 2 1 240px; }
 .filters select { flex: 1 1 150px; }
 input, select {
@@ -165,9 +158,6 @@ input:focus, select:focus { outline: 2px solid var(--blue); outline-offset: -1px
   .container { padding: 0 14px; }
   .brand p { display: none; }
   .brand h1 { font-size: 17px; }
-  .stats { gap: 8px; }
-  .stat { padding: 10px 12px; }
-  .stat-value { font-size: 22px; }
   .filters select, .filters .search { flex: 1 1 100%; }
 
   .form-grid { grid-template-columns: 1fr; }

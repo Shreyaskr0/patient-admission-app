@@ -84,7 +84,6 @@ def list_patients(
     ward: str = "",
     department: str = "",
     doctor: str = "",
-    status: str = "",
     db: Session = Depends(get_db),
 ):
     query = db.query(Patient)
@@ -96,15 +95,8 @@ def list_patients(
         query = query.filter(Patient.department == department)
     if doctor:
         query = query.filter(Patient.doctor == doctor)
-    if status:
-        query = query.filter(Patient.status == status)
     patients = query.order_by(Patient.admission_date.desc(), Patient.id.desc()).all()
     return [p.to_dict() for p in patients]
-
-
-@app.get("/api/patients/{patient_id}")
-def get_patient(patient_id: int, db: Session = Depends(get_db)):
-    return get_patient_or_404(db, patient_id).to_dict()
 
 
 @app.post("/api/patients", status_code=201)
