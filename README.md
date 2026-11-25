@@ -1,98 +1,96 @@
 # Patient Admission Management App
 
-A web app for hospital staff to add, view, search, filter, edit, discharge and delete admitted patients.
+This is my submission for the DScribe Software Engineer Intern Round 1 task.
+It is a simple web app where hospital staff can add and manage admitted patients.
 
-**Live app:** https://patient-admission-app-6tkp.vercel.app  
-**Live API:** https://patient-admission-api-efhx.onrender.com (interactive docs at [`/docs`](https://patient-admission-api-efhx.onrender.com/docs))  
-**GitHub:** https://github.com/Shreyaskr0/patient-admission-app
+**Live link:** https://patient-admission-app-6tkp.vercel.app
+**Backend API:** https://patient-admission-api-efhx.onrender.com
 
-> The backend runs on Render's free plan and sleeps when idle, so the first load can take up to about a minute.
+Note: The backend is on Render free plan, so if it was not used for some time the first load can take around 50 seconds.
 
-## Tech stack
+## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Frontend | React 18 (Vite), plain CSS (responsive: mobile, tablet, desktop) |
-| Backend | Python 3.11, FastAPI, SQLAlchemy |
-| Database | PostgreSQL (Neon) in production · SQLite file for local development |
-| Hosting | Vercel (frontend) · Render (backend) |
+- **Frontend:** React (made with Vite)
+- **Backend:** Python with FastAPI
+- **Database:** PostgreSQL on Neon (SQLite when running on my laptop)
+- **Hosting:** Vercel for frontend, Render for backend
 
 ## Features
 
 - Add a patient
-- View all patients (table on desktop, cards on tablet and mobile)
-- Filter by ward, department, doctor (and status)
-- Search patients by name
+- See list of all patients
+- Filter by ward, department and doctor (also by status)
+- Search patient by name
 - Edit a patient
-- Delete a patient, after a confirmation dialog
-- Mark a patient as discharged, after a confirmation dialog
-- Validation on **both** frontend and backend:
-  - Name: required, letters only (spaces allowed between words)
-  - Age: required, whole number between 0 and 120
-  - Gender, ward, department, doctor: required, must be from the list
-  - Admission date: required, cannot be in the future
-  - The backend rejects bad data with HTTP 400 and a clear message for each field
+- Delete a patient (asks for confirmation first)
+- Mark a patient as discharged
+- Works on mobile and desktop
+
+## Validation
+
+I added validation in both frontend and backend:
+
+- Name is required and can have only letters
+- Age is required and must be between 0 and 120
+- Gender, ward, department and doctor must be selected from the list
+- Admission date is required and cannot be a future date
+
+If wrong data is sent to the backend, it returns a 400 error with a message like `Age must be between 0 and 120`.
 
 ## Screenshots
 
-| Desktop | Tablet | Mobile |
-|---|---|---|
-| ![Desktop](docs/desktop.jpg) | ![Tablet](docs/tablet.jpg) | ![Mobile](docs/mobile.jpg) |
+Desktop:
 
-## Project structure
+![Desktop](docs/desktop.jpg)
+
+Mobile:
+
+![Mobile](docs/mobile.jpg)
+
+## Folder Structure
 
 ```
 backend/
-  main.py          API routes
-  validation.py    backend validation rules
-  database.py      database connection and Patient table
-  options.py       dropdown lists (gender, ward, department, doctor)
+  main.py         - all the API routes
+  validation.py   - backend validation
+  database.py     - database connection and patient table
+  options.py      - lists for gender, ward, department, doctor
 frontend/
-  src/App.jsx                     list, search, filters, actions
-  src/components/PatientForm.jsx  add / edit form
-  src/components/ConfirmDialog.jsx
-  src/validation.js               frontend validation rules
-  src/api.js                      calls to the backend
+  src/App.jsx                       - main page (list, search, filters)
+  src/components/PatientForm.jsx    - add / edit form
+  src/components/ConfirmDialog.jsx  - confirm popup for delete and discharge
+  src/validation.js                 - frontend validation
+  src/api.js                        - functions to call the backend
 ```
 
-## API
+## API Endpoints
 
-| Method | Endpoint | Description |
+| Method | Endpoint | What it does |
 |---|---|---|
-| GET | `/api/options` | Dropdown lists |
-| GET | `/api/patients?search=&ward=&department=&doctor=&status=` | List, search and filter |
-| GET | `/api/patients/{id}` | One patient |
-| POST | `/api/patients` | Add a patient |
-| PUT | `/api/patients/{id}` | Edit a patient |
-| PATCH | `/api/patients/{id}/discharge` | Mark as discharged |
-| DELETE | `/api/patients/{id}` | Delete a patient |
+| GET | `/api/options` | gets dropdown lists |
+| GET | `/api/patients` | gets all patients (search and filters as query params) |
+| POST | `/api/patients` | adds a patient |
+| PUT | `/api/patients/{id}` | edits a patient |
+| PATCH | `/api/patients/{id}/discharge` | marks patient as discharged |
+| DELETE | `/api/patients/{id}` | deletes a patient |
 
-Example error response (HTTP 400):
+## How to Run Locally
 
-```json
-{
-  "detail": "Name must contain letters only; Age must be between 0 and 120",
-  "errors": { "name": "Name must contain letters only", "age": "Age must be between 0 and 120" }
-}
-```
-
-## Run locally
-
-Requirements: Python 3.10+ and Node.js 18+.
+You need Python and Node.js installed.
 
 **Backend**
 
 ```bash
 cd backend
 python -m venv .venv
-# Windows: .venv\Scripts\activate    macOS/Linux: source .venv/bin/activate
+.venv\Scripts\activate
 pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
-The API runs at http://localhost:8000. Without `DATABASE_URL` it stores data in `backend/patients.db` (SQLite), so data stays after a restart.
+Backend runs on http://localhost:8000. If `DATABASE_URL` is not set, it saves data in a local SQLite file (`patients.db`).
 
-**Frontend** (in a second terminal)
+**Frontend** (in another terminal)
 
 ```bash
 cd frontend
@@ -100,14 +98,10 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173. To point it at another backend, copy `.env.example` to `.env` and set `VITE_API_URL`.
+Open http://localhost:5173 in the browser.
 
 ## Deployment
 
-1. **Database (Neon):** create a free project and copy the PostgreSQL connection string.
-2. **Backend (Render):** New → Blueprint → select this repo (uses `render.yaml`), or New → Web Service with root directory `backend`, build command `pip install -r requirements.txt` and start command `uvicorn main:app --host 0.0.0.0 --port $PORT`. Set these environment variables in the dashboard:
-   - `DATABASE_URL` = the Neon connection string
-   - `ALLOWED_ORIGINS` = the Vercel URL, e.g. `https://your-app.vercel.app`
-3. **Frontend (Vercel):** import the repo, set root directory to `frontend`, and add the environment variable `VITE_API_URL` = the Render URL.
-
-No passwords or keys are stored in this repository. They are set only as environment variables on the hosts.
+- Database is on Neon. The connection string is added as `DATABASE_URL` in Render environment variables (not in GitHub).
+- Backend is deployed on Render with root directory `backend`. `ALLOWED_ORIGINS` is set to the Vercel link.
+- Frontend is deployed on Vercel with root directory `frontend` and `VITE_API_URL` set to the Render link.
