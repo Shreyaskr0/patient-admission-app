@@ -26,7 +26,8 @@ allowed_origins = os.getenv(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[o.strip().rstrip("/") for o in allowed_origins if o.strip()],    allow_methods=["*"],
+    allow_origins=[o.strip().rstrip("/") for o in allowed_origins if o.strip()],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
