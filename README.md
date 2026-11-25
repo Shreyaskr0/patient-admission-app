@@ -14,6 +14,10 @@ https://patient-admission-app-6tkp.vercel.app
 
 ## Steps to Run
 
+**Online:** Just open the live link above. No setup needed.
+
+**Locally:**
+
 **Backend**
 
 ```bash
