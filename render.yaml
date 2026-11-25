@@ -1,0 +1,17 @@
+# Render blueprint for the FastAPI backend.
+# Secrets (DATABASE_URL) are entered in the Render dashboard, never committed.
+services:
+  - type: web
+    name: patient-admission-api
+    runtime: python
+    rootDir: backend
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: DATABASE_URL
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false
